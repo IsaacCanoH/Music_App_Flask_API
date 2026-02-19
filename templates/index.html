@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+{% block title %}
+  MusicWold
+{% endblock title %}
+{% block css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock css %}
+{% block content %}
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <img src="{{ url_for('static', filename='img/music-party-svgrepo-com.svg') }}" alt="Logo" class="logo-icon">
+                 <span class="logo-text">
+                    Music<span class="logo-world">World</span>
+                </span>
+            </a>
+            <form method="POST" class="search-form">
+                <div class="search-wrapper">
+                    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" name="query" placeholder="Buscar artista, canción o álbum..." required class="search-input">
+                    <button type="submit" class="search-btn">Buscar</button>
+                </div>
+            </form>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+
+            <div class="results-header">
+                <h2 class="results-title">Resultados</h2>
+                <span class="results-count">{% if songs %}{{ songs|length }} canciones encontradas{% endif %}</span>
+            </div>
+
+            <div class="cards-grid">
+                {% for song in songs %}
+                <article class="song-card">
+
+                    <div class="card-image-wrapper">
+                    <img
+                        src="{{ song.album_cover or song.artist_image }}"
+                        alt="Portada de {{ song.title }}"
+                        class="card-image"
+                    >
+
+                    {# Overlay solo si hay preview (Deezer). En iTunes RSS no hay preview #}
+                    {% if song.preview %}
+                    <div class="card-play-overlay" onclick="document.getElementById('audio-{{ loop.index }}').play()">
+                        <svg class="play-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40"
+                            viewBox="0 0 24 24" fill="white">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                    </div>
+                    {% endif %}
+                    </div>
+
+                    <div class="card-body">
+                    <h3 class="song-title">{{ song.title }}</h3>
+
+                    <div class="artist-row">
+                        <img
+                        src="{{ song.artist_image or song.album_cover }}"
+                        alt="{{ song.artist_name }}"
+                        class="artist-avatar"
+                        >
+                        <span class="artist-name">{{ song.artist_name }}</span>
+                    </div>
+
+                    <div class="album-row">
+                        <svg class="album-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+
+                        {# Deezer trae album_title. iTunes RSS a veces no -> mostramos Top global #}
+                        <span class="album-name">
+                        {{ song.album_title or "Top global" }}
+                        </span>
+
+                        <button class="lyrics-btn"
+                        onclick='openLyricsModal({{ song.title|tojson }}, {{ song.artist_name|tojson }}, {{ (song.album_cover or song.artist_image)|tojson }})'>
+                        Ver Letra
+                        </button>
+                    </div>
+
+                    {# Reproductor SOLO si hay preview (Deezer) #}
+                    {% if song.preview %}
+                    <div class="audio-wrapper">
+                        <audio id="audio-{{ loop.index }}" controls>
+                        <source src="{{ song.preview }}" type="audio/mpeg">
+                        Tu navegador no soporta audio.
+                        </audio>
+                    </div>
+                    {% else %}
+                        {# Si viene del top de iTunes/Apple RSS, mostramos link a Apple Music #}
+                        {% if song.itunes_url %}
+                        <div class="audio-wrapper">
+                        <a href="{{ song.itunes_url }}" target="_blank" rel="noopener" class="footer-link">
+                            Abrir en Apple Music
+                        </a>
+                        </div>
+                        {% endif %}
+                    {% endif %}
+
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+
+
+            {% if not songs %}
+            <div class="empty-state">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="empty-icon">
+                    <circle cx="5.5" cy="17.5" r="2.5"></circle>
+                    <circle cx="17.5" cy="15.5" r="2.5"></circle>
+                    <path d="M8 17V5l12-2v10"></path>
+                </svg>
+                <h3 class="empty-title">Busca tu música favorita</h3>
+                <p class="empty-text">Escribe el nombre de un artista, canción o álbum en el buscador.</p>
+            </div>
+            {% endif %}
+
+        </div>
+    </main>
+
+    <!-- Lyrics Modal -->
+    <div class="lyrics-modal-overlay" id="lyricsOverlay" onclick="closeLyricsModal(event)">
+        <div class="lyrics-modal" onclick="event.stopPropagation()">
+            <button class="lyrics-modal-close" onclick="closeLyricsModal()" aria-label="Cerrar modal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="lyrics-modal-header">
+                <img id="lyricsAlbumCover" src="" alt="" class="lyrics-modal-cover">
+                <div class="lyrics-modal-info">
+                    <span class="lyrics-modal-label">Letra de</span>
+                    <h3 id="lyricsTitle" class="lyrics-modal-song"></h3>
+                    <p id="lyricsArtist" class="lyrics-modal-artist"></p>
+                </div>
+            </div>
+            <div class="lyrics-modal-divider"></div>
+            <div class="lyrics-modal-body" id="lyricsBody">
+                <!-- Lyrics injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function openLyricsModal(title, artist, cover) {
+            const overlay = document.getElementById('lyricsOverlay');
+            document.getElementById('lyricsTitle').textContent = title || 'Sin título';
+            document.getElementById('lyricsArtist').textContent = artist || 'Artista desconocido';
+
+            const coverImg = document.getElementById('lyricsAlbumCover');
+            if (cover) { coverImg.src = cover; coverImg.style.display = 'block'; }
+            else { coverImg.style.display = 'none'; }
+
+            const lyricsBody = document.getElementById('lyricsBody');
+            lyricsBody.innerHTML = '<p class="lyrics-line">Cargando letra...</p>';
+
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            try {
+            const res = await fetch(`/lyrics?artist=${encodeURIComponent(artist)}&title=${encodeURIComponent(title)}`);
+            const data = await res.json();
+            renderLyrics(data.lyrics || 'Letra no disponible');
+            } catch (e) {
+            renderLyrics('Letra no disponible');
+            }
+        }
+
+        function renderLyrics(text) {
+            const lyricsBody = document.getElementById('lyricsBody');
+            lyricsBody.innerHTML = '';
+            (text || 'Letra no disponible').split('\n').forEach(line => {
+            if (!line.trim()) lyricsBody.appendChild(document.createElement('br'));
+            else {
+                const p = document.createElement('p');
+                p.className = 'lyrics-line';
+                p.textContent = line;
+                lyricsBody.appendChild(p);
+            }
+            });
+        }
+
+        function closeLyricsModal(event) {
+            if (event && event.target !== document.getElementById('lyricsOverlay')) return;
+
+            const overlay = document.getElementById('lyricsOverlay');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeLyricsModal();
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const audios = document.querySelectorAll('audio');
+
+            audios.forEach(audio => {
+                audio.addEventListener('play', function () {
+
+                    audios.forEach(otherAudio => {
+                        if (otherAudio !== audio) {
+                            otherAudio.pause();
+                            otherAudio.currentTime = 0; 
+                        }
+                    });
+
+                });
+            });
+        });
+    </script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <span class="logo-music">Music</span><span class="logo-world">World</span>
+            </div>
+            <p class="footer-copy">&copy; 2026 MusicWorld. Todos los derechos reservados.</p>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Privacidad</a>
+                <a href="#" class="footer-link">Términos</a>
+                <a href="#" class="footer-link">Contacto</a>
+            </div>
+        </div>
+    </footer>
+
+{% endblock content %}

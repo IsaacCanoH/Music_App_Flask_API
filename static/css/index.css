@@ -1,0 +1,747 @@
+/* ========================================
+   MusicWorld - Estilos Globales
+   ======================================== */
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --color-bg: #f5f7fa;
+    --color-surface: #ffffff;
+    --color-text: #1a1a2e;
+    --color-text-secondary: #6b7280;
+    --color-green: #16a34a;
+    --color-green-light: #dcfce7;
+    --color-accent: #2563eb;
+    --color-accent-light: #dbeafe;
+    --color-border: #e5e7eb;
+    --color-border-hover: #d1d5db;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.08);
+    --shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.1);
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+/* ========================================
+   Header
+   ======================================== */
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    backdrop-filter: blur(12px);
+    background-color: rgba(255, 255, 255, 0.92);
+}
+
+.header-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    flex-shrink: 0;
+    transition: opacity 0.2s ease;
+}
+
+.logo:hover {
+    opacity: 0.8;
+}
+
+.logo-music {
+    color: var(--color-text);
+}
+
+.logo-world {
+    color: var(--color-green);
+}
+
+.logo{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.logo-icon{
+  width: 40px;
+  height: 40px;
+}
+
+
+/* Search Form */
+
+.search-form {
+    flex: 1;
+    max-width: 560px;
+}
+
+.search-wrapper {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-bg);
+    border: 1.5px solid var(--color-border);
+    border-radius: 100px;
+    padding: 4px 4px 4px 16px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-wrapper:focus-within {
+    border-color: var(--color-green);
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12);
+}
+
+.search-icon {
+    color: var(--color-text-secondary);
+    flex-shrink: 0;
+    margin-right: 10px;
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-family: var(--font-family);
+    font-size: 0.9rem;
+    color: var(--color-text);
+    outline: none;
+    min-width: 0;
+}
+
+.search-input::placeholder {
+    color: var(--color-text-secondary);
+}
+
+.search-btn {
+    flex-shrink: 0;
+    background-color: var(--color-green);
+    color: #ffffff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 100px;
+    font-family: var(--font-family);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.search-btn:hover {
+    background-color: #15803d;
+    transform: scale(1.02);
+}
+
+.search-btn:active {
+    transform: scale(0.98);
+}
+
+/* ========================================
+   Main Content
+   ======================================== */
+
+.main-content {
+    flex: 1;
+    padding: 40px 0 64px;
+}
+
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Results Header */
+
+.results-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 32px;
+}
+
+.results-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+}
+
+.results-count {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+
+/* ========================================
+   Cards Grid
+   ======================================== */
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+/* ========================================
+   Song Card
+   ======================================== */
+
+.song-card {
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.song-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--color-border-hover);
+}
+
+/* Card Image */
+
+.card-image-wrapper {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background-color: #e5e7eb;
+}
+
+.card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.song-card:hover .card-image {
+    transform: scale(1.05);
+}
+
+.card-play-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.song-card:hover .card-play-overlay {
+    opacity: 1;
+}
+
+.play-icon {
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+    transition: transform 0.2s ease;
+}
+
+.song-card:hover .play-icon {
+    transform: scale(1.1);
+}
+
+/* Card Body */
+
+.card-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.song-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Artist Row */
+
+.artist-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.artist-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-green-light);
+    flex-shrink: 0;
+}
+
+.artist-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-green);
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Album Row */
+
+.album-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.album-icon {
+    color: var(--color-accent);
+    flex-shrink: 0;
+}
+
+.album-name {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Audio Player */
+
+.audio-wrapper {
+    padding-top: 4px;
+}
+
+.audio-wrapper audio {
+    width: 100%;
+    height: 36px;
+    border-radius: 100px;
+}
+
+/* ========================================
+   Lyrics Button
+   ======================================== */
+
+.lyrics-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+    padding: 4px 10px;
+    font-family: var(--font-family);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-surface);
+    background: linear-gradient(135deg, var(--color-green), #0d9488);
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.lyrics-btn svg {
+    flex-shrink: 0;
+}
+
+.lyrics-btn:hover {
+    transform: scale(1.06);
+    box-shadow: 0 2px 12px rgba(22, 163, 74, 0.35);
+    filter: brightness(1.08);
+}
+
+.lyrics-btn:active {
+    transform: scale(0.97);
+}
+
+/* ========================================
+   Lyrics Modal
+   ======================================== */
+
+.lyrics-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.lyrics-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lyrics-modal {
+    position: relative;
+    width: 90%;
+    max-width: 520px;
+    max-height: 85vh;
+    background: var(--color-surface);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: translateY(24px) scale(0.96);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lyrics-modal-overlay.active .lyrics-modal {
+    transform: translateY(0) scale(1);
+}
+
+/* Close Button */
+
+.lyrics-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+    z-index: 2;
+}
+
+.lyrics-modal-close:hover {
+    background: #fee2e2;
+    color: #dc2626;
+    transform: rotate(90deg);
+}
+
+/* Modal Header */
+
+.lyrics-modal-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 24px 24px 0;
+}
+
+.lyrics-modal-cover {
+    width: 72px;
+    height: 72px;
+    border-radius: var(--radius-md);
+    object-fit: cover;
+    box-shadow: var(--shadow-md);
+    flex-shrink: 0;
+}
+
+.lyrics-modal-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    padding-right: 36px;
+}
+
+.lyrics-modal-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-secondary);
+}
+
+.lyrics-modal-song {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.lyrics-modal-artist {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-green);
+}
+
+/* Divider */
+
+.lyrics-modal-divider {
+    height: 1px;
+    background: var(--color-border);
+    margin: 20px 24px 0;
+}
+
+/* Lyrics Body */
+
+.lyrics-modal-body {
+    padding: 20px 24px 28px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.lyrics-modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.lyrics-modal-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.lyrics-modal-body::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 3px;
+}
+
+.lyrics-line {
+    font-size: 0.9375rem;
+    line-height: 1.75;
+    color: var(--color-text);
+    margin: 0;
+}
+
+.lyrics-section-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-green);
+    margin: 16px 0 6px;
+    padding: 4px 12px;
+    background: var(--color-green-light);
+    border-radius: 100px;
+    display: inline-block;
+}
+
+/* ========================================
+   Empty State
+   ======================================== */
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 24px;
+}
+
+.empty-icon {
+    color: var(--color-text-secondary);
+    opacity: 0.4;
+    margin-bottom: 24px;
+}
+
+.empty-title {
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 8px;
+}
+
+.empty-text {
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    max-width: 360px;
+}
+
+/* ========================================
+   Footer
+   ======================================== */
+
+.footer {
+    background-color: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    margin-top: auto;
+}
+
+.footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.footer-brand {
+    font-size: 1.125rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.footer-copy {
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+}
+
+.footer-links {
+    display: flex;
+    gap: 24px;
+}
+
+.footer-link {
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+    color: var(--color-green);
+}
+
+/* ========================================
+   Responsive Design
+   ======================================== */
+
+@media (max-width: 1024px) {
+    .cards-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .header-inner {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 16px 20px;
+        gap: 12px;
+    }
+
+    .search-form {
+        max-width: 100%;
+        order: 3;
+        width: 100%;
+    }
+
+    .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    .results-title {
+        font-size: 1.375rem;
+    }
+
+    .main-content {
+        padding: 28px 0 48px;
+    }
+
+    .footer-inner {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .cards-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .container {
+        padding: 0 16px;
+    }
+
+    .logo {
+        font-size: 1.25rem;
+    }
+
+    .lyrics-modal {
+        width: 95%;
+        max-height: 90vh;
+        border-radius: var(--radius-lg);
+    }
+
+    .lyrics-modal-header {
+        padding: 20px 20px 0;
+    }
+
+    .lyrics-modal-cover {
+        width: 56px;
+        height: 56px;
+    }
+
+    .lyrics-modal-divider {
+        margin: 16px 20px 0;
+    }
+
+    .lyrics-modal-body {
+        padding: 16px 20px 24px;
+    }
+
+    .lyrics-modal-song {
+        font-size: 1rem;
+    }
+}
